@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:forage/forage_provider.dart';
+import 'package:provider/provider.dart';
 
 class Forge extends StatelessWidget {
   Forge({super.key});
 
-  var nameController = TextEditingController();
-  var locationController = TextEditingController();
-  var noteController = TextEditingController();
+  bool check = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +22,7 @@ class Forge extends StatelessWidget {
           children: [
             SizedBox(height: 24,),
             TextField(
-              controller: nameController,
+              controller: context.read<HomeProvider>().nameController,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 label: Text("Name"),
@@ -29,7 +30,7 @@ class Forge extends StatelessWidget {
             ),
             SizedBox(height: 24,),
             TextField(
-              controller: locationController,
+              controller: context.read<HomeProvider>().locationController,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 label: Text("Location"),
@@ -38,15 +39,15 @@ class Forge extends StatelessWidget {
             SizedBox(height: 40,),
             Row(
               children: [
-                Checkbox(value: false, onChanged: (bool? value){
-      
+                Checkbox(value: context.watch<HomeProvider>().getcheck, onChanged: (bool? value){
+                  context.read<HomeProvider>().changeCheck();
                 }),
                 Text("currently season")
               ],
             ),
             SizedBox(height: 40,),
             TextField(
-              controller: noteController,
+              controller: context.read<HomeProvider>().noteController,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 label: Text("Notes"),
@@ -57,12 +58,20 @@ class Forge extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 MaterialButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.read<HomeProvider>().saveElements();
+                    Navigator.of(context).pop();
+                  },
                   child: Text("SAVE", style: TextStyle(color: Colors.white)),
                   color: Colors.indigo,
                 ),
                 MaterialButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.read<HomeProvider>().nameController.clear();
+                    context.read<HomeProvider>().locationController.clear();
+                    context.read<HomeProvider>().noteController.clear();
+                    context.read<HomeProvider>().changeCheck();
+                  },
                   child: Text("DELETE", style: TextStyle(color: Colors.white),),
                   color: Colors.indigo,
                 )

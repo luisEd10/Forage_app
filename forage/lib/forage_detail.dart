@@ -32,6 +32,9 @@ class ListDetails extends StatelessWidget {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(onPressed: () {
+      },
+      child: Icon(Icons.edit),)
     );
   }
 }
